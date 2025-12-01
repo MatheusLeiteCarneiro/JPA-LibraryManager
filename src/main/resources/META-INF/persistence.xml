@@ -23,8 +23,8 @@
 
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="jakarta.persistence.logging.level" value="WARN"/>
         </properties>
 
     </persistence-unit>
