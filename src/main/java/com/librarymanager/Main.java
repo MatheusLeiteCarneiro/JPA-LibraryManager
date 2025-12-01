@@ -54,7 +54,7 @@ public class Main {
                     System.out.println("Operations finished");
                     break;
                 default:
-                    System.out.println("Invalid option!");
+                    printInvalidOption();
             }
         }
     }
@@ -108,7 +108,7 @@ public class Main {
                 }
                 break;
             default:
-                System.out.println("Invalid option!");
+                printInvalidOption();
         }
     }
 
@@ -145,13 +145,57 @@ public class Main {
                 }
                 break;
             case 3:
+                System.out.println("Books list:");
+                bookDAO.getAllBooks().forEach(System.out::println);
                 break;
             case 4:
+                System.out.print("Digit the ID of the book to update:");
+                book = bookDAO.getBook(sc.nextLong());
+                sc.nextLine();
+                if(idFound(book)){
+                    System.out.print("What information you want to change?");
+                    System.out.println("1- Name (" + book.getName() + ")");
+                    System.out.println("2- Publication Date (" + book.getPublicationDate().format(fmt) + ")");
+                    System.out.println("3- Author (" + book.getAuthor().getName() + ")");
+                    System.out.print("Digit: ");
+                    int informationToChange = sc.nextInt();
+                    sc.nextLine();
+                    switch (informationToChange){
+                        case 1:
+                            System.out.print("New name: ");
+                            String newName = sc.nextLine();
+                            book.setName(newName);
+                            bookDAO.updateBook(book);
+                            System.out.println("Name successfully updated!");
+                            break;
+                        case 2:
+                            System.out.println("New publication date (dd/MM/yyyy): ");
+                            LocalDate newDate = LocalDate.parse(sc.next(),fmt);
+                            book.setPublicationDate(newDate);
+                            bookDAO.updateBook(book);
+                            System.out.println("Publication Date successfully updated!");
+                            break;
+                        case 3:
+                            System.out.print("New Author ID:");
+                            author = authorDAO.getAuthorByID(sc.nextLong());
+                            sc.nextLine();
+                            if(idFound(author)){
+                                book.setAuthor(author);
+                                bookDAO.updateBook(book);
+                                System.out.println("Author successfully updated!");
+                            }
+                            break;
+                        default:
+                            printInvalidOption();
+
+                    }
+                }
+
                 break;
             case 5:
                 break;
             default:
-                System.out.println("Invalid option!");
+               printInvalidOption();
         }
     }
 
@@ -163,5 +207,8 @@ public class Main {
         return true;
     }
 
+    private static void printInvalidOption(){
+        System.err.println("Invalid option!");
+    }
 
 }
