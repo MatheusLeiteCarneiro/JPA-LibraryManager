@@ -1,5 +1,6 @@
 package com.librarymanager.dao;
 
+import com.librarymanager.model.Author;
 import com.librarymanager.model.Book;
 import jakarta.persistence.EntityManager;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 public class BookDAO {
     private EntityManager em;
+
 
     public BookDAO(EntityManager em) {
         this.em = em;
@@ -27,6 +29,10 @@ public class BookDAO {
     public void removeBook(Book book) {
         try{
             em.getTransaction().begin();
+            Author bookAuthor = book.getAuthor();
+            if(bookAuthor != null){
+                bookAuthor.removeBook(book);
+            }
             em.remove(book);
             em.getTransaction().commit();
         }
