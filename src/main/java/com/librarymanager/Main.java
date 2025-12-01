@@ -11,12 +11,8 @@ import jakarta.persistence.Persistence;
 import org.h2.tools.Server;
 
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -29,6 +25,9 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             mainMenu(sc, em);
             sc.close();
+            em.close();
+            emf.close();
+            server.stop();
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }
@@ -121,7 +120,7 @@ public class Main {
         Author author = null;
         System.out.println("(BOOKS MENU)");
         System.out.println("DIGIT:");
-        System.out.println("1- Create a new Book | 2- Find a Book By ID | 3- List All Books | 4- Update a Book | 5- Delete a Book");
+        System.out.println("1- Create a new Book | 2- Find Book Information | 3- List All Books | 4- Update a Book | 5- Delete a Book");
         int operation = sc.nextInt();
         sc.nextLine();
         switch (operation) {
@@ -137,11 +136,13 @@ public class Main {
                     bookDAO.addBook(book);
                     System.out.println("Book successfully added");
                 }
-                else {
-                    System.out.println("Operation canceled, author not found!");
-                }
                 break;
             case 2:
+                System.out.print("Digit the ID:");
+                book = bookDAO.getBook(sc.nextLong());
+                if(idFound(book)){
+                    System.out.println("Book information: " + book);
+                }
                 break;
             case 3:
                 break;
