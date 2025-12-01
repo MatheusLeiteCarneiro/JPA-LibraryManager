@@ -2,7 +2,9 @@ package com.librarymanager;
 
 import com.librarymanager.Exceptions.DBException;
 import com.librarymanager.dao.AuthorDAO;
+import com.librarymanager.dao.BookDAO;
 import com.librarymanager.model.Author;
+import com.librarymanager.model.Book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -103,7 +105,25 @@ public class Main {
     }
 
     private void bookMenu(Scanner sc, EntityManager em){
-
+        BookDAO bookDAO = new BookDAO(em);
+        Book book = null;
+        System.out.println("(BOOKS MENU)");
+        System.out.println("DIGIT:");
+        System.out.println("1- Create a new Book | 2- Find a Book By ID | 3- List All Books | 4- Update a Book | 5- Delete a Book");
+        switch (sc.nextInt()) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            default:
+                System.out.println("Invalid option!");
+        }
     }
 
     private <T> boolean idFound(T type){
