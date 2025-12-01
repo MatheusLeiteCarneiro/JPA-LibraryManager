@@ -52,6 +52,7 @@ public class Main {
 
     private void authorMenu(Scanner sc, EntityManager em){
         AuthorDAO authorDAO = new AuthorDAO(em);
+        Author author = null;
         System.out.println("(AUTHORS MENU)");
         System.out.println("DIGIT:");
         System.out.println("1- Create new Author | 2- Find Author Books | 3- List All Authors | 4- Update Author | 5- Delete Author");
@@ -59,11 +60,16 @@ public class Main {
             case 1:
                 System.out.print("Author Name:");
                 String name = sc.nextLine();
-                Author author = new Author(name);
+                author = new Author(name);
                 authorDAO.addAuthor(author);
                 System.out.println("Author "+ author +" successfully added");
                 break;
             case 2:
+                System.out.print("Type Author ID: ");
+                author = authorDAO.getAuthorByID(sc.nextLong());
+                System.out.println("Book list of the author: " + author.getName());
+                author.getBookList().forEach(System.out::println);
+                break;
 
         }
     }
