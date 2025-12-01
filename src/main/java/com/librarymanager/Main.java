@@ -192,6 +192,12 @@ public class Main {
                 }
                 break;
             case 5:
+                System.out.print("Digit the ID of the book to delete:");
+                book = bookDAO.getBook(sc.nextLong());
+                if(idFound(book)){
+                    bookDAO.removeBook(book);
+                    System.out.println("Book " + book.getName() + " successfully deleted!");
+                }
                 break;
             default:
                printInvalidOption();
