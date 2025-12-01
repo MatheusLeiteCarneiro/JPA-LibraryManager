@@ -52,4 +52,8 @@ public class Author {
         book.setAuthor(null);
     }
 
+    @Override
+    public String toString() {
+        return "ID: " + getId() + " | Name: " + getName();
+    }
 }
