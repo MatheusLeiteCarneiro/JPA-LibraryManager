@@ -1,6 +1,7 @@
 package com.librarymanager.model;
 
 
+import com.librarymanager.Exceptions.DBException;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ public class Book {
     public Book(String name, LocalDate publicationDate, Author author) {
         this.name = name;
         this.publicationDate = publicationDate;
-        this.author = author;
+        author.addBook(this);
     }
 
     public long getId() {
@@ -54,9 +55,15 @@ public class Book {
     public Author getAuthor() {
         return author;
     }
-
-    public void setAuthor(Author author) {
+    void setAuthor(Author author){
         this.author = author;
+    }
+
+    public void updateAuthor(Author newAuthor) {
+        if (newAuthor == null) { throw new DBException("ERROR: Null Author");}
+        if(newAuthor == author) { return;}
+        getAuthor().removeBook(this);
+        newAuthor.addBook(this);
     }
 
     @Override
