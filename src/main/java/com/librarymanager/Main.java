@@ -16,8 +16,9 @@ public class Main {
         try {
             Server server = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082");
             server.start();
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("Library-JPA");
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("library-jpa");
             EntityManager em = emf.createEntityManager();
+
 
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
@@ -98,10 +99,6 @@ public class Main {
                 break;
             default:
                 System.out.println("Invalid option!");
-
-
-
-
         }
     }
 
