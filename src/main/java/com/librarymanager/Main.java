@@ -70,6 +70,12 @@ public class Main {
                 System.out.println("Book list of the author: " + author.getName());
                 author.getBookList().forEach(System.out::println);
                 break;
+            case 3:
+                System.out.println("Authors List");
+                authorDAO.getAllAuthors().forEach(System.out::println);
+                break;
+
+
 
         }
     }
