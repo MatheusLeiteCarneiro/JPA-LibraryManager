@@ -180,7 +180,7 @@ public class Main {
                             author = authorDAO.getAuthorByID(sc.nextLong());
                             sc.nextLine();
                             if(idFound(author)){
-                                book.setAuthor(author);
+                                book.updateAuthor(author);
                                 bookDAO.updateBook(book);
                                 System.out.println("Author successfully updated!");
                             }
@@ -190,7 +190,6 @@ public class Main {
 
                     }
                 }
-
                 break;
             case 5:
                 break;
