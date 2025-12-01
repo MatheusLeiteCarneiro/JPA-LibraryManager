@@ -1,6 +1,6 @@
 package com.librarymanager;
 
-import com.librarymanager.Exceptions.DBException;
+
 import com.librarymanager.dao.AuthorDAO;
 import com.librarymanager.dao.BookDAO;
 import com.librarymanager.model.Author;
@@ -10,13 +10,13 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.h2.tools.Server;
 
-import java.sql.SQLException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
-    public static void main() {
+    public static void main(String[] args) {
         try {
             Server server = Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082");
             server.start();
@@ -28,22 +28,18 @@ public class Main {
             em.close();
             emf.close();
             server.stop();
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage());
+        }
+        catch (Exception e){
+            System.err.println(e.getMessage());
         }
 
     }
 
     private static void mainMenu(Scanner sc, EntityManager em) {
-        int selector = -1;
-        while (selector != 0) {
-            System.out.println("(MAIN MENU)");
-            System.out.println("DIGIT:");
-            System.out.println("1-Authors Operations | 2-Books Operations | 0-Finish Operations");
-            selector = sc.nextInt();
-            sc.nextLine();
-            System.out.println();
-            switch (selector) {
+        int operation = -1;
+        while (operation != 0){
+            operation = getMainMenuOption(sc);
+            switch (operation) {
                 case 1:
                     authorMenu(sc, em);
                     break;
@@ -55,8 +51,20 @@ public class Main {
                     break;
                 default:
                     printInvalidOption();
+                    pressEnterToContinue(sc);
+                    break;
             }
-        }
+    }
+    }
+
+
+    private static int getMainMenuOption(Scanner sc){
+        System.out.println("\n(MAIN MENU)");
+        System.out.println("DIGIT:");
+        System.out.println("1-Authors Operations | 2-Books Operations | 0-Finish Operations");
+        int op = sc.nextInt();
+        sc.nextLine();
+        return op;
     }
 
     private static void authorMenu(Scanner sc, EntityManager em){
@@ -78,6 +86,7 @@ public class Main {
             case 2:
                 System.out.print("Type Author ID: ");
                 author = authorDAO.getAuthorByID(sc.nextLong());
+                sc.nextLine();
                 if(idFound(author)){
                 System.out.println("Book list of the author: " + author.getName());
                 author.getBookList().forEach(System.out::println);
@@ -93,23 +102,26 @@ public class Main {
                 sc.nextLine();
                 if(idFound(author)){
                     System.out.println("Author: " + author);
-                    System.out.println("New Name: ");
+                    System.out.print("New Name: ");
                     author.setName(sc.nextLine());
                     authorDAO.updateAuthor(author);
                     System.out.println("Successfully Updated");
                 }
                 break;
             case 5:
-                System.out.println("Type the ID of the author you want to delete: ");
+                System.out.print("Type the ID of the author you want to delete: ");
                 author = authorDAO.getAuthorByID(sc.nextLong());
+                sc.nextLine();
                 if(idFound(author)){
                     authorDAO.removeAuthor(author);
-                    System.out.println("Author " + author.getName() + "and their books successfully deleted");
+                    System.out.println("Author " + author.getName() + " and their books successfully deleted");
                 }
                 break;
             default:
                 printInvalidOption();
+                break;
         }
+        pressEnterToContinue(sc);
     }
 
     private static void bookMenu(Scanner sc, EntityManager em){
@@ -131,15 +143,17 @@ public class Main {
                 LocalDate publicationDate = LocalDate.parse(sc.next(),fmt);
                 System.out.print("Author ID:");
                 author = authorDAO.getAuthorByID(sc.nextLong());
+                sc.nextLine();
                 if(idFound(author)){
                     book = new Book(name, publicationDate, author);
                     bookDAO.addBook(book);
-                    System.out.println("Book successfully added");
+                    System.out.println("Book "+ book +" successfully added");
                 }
                 break;
             case 2:
                 System.out.print("Digit the ID:");
                 book = bookDAO.getBook(sc.nextLong());
+                sc.nextLine();
                 if(idFound(book)){
                     System.out.println("Book information: " + book);
                 }
@@ -153,7 +167,7 @@ public class Main {
                 book = bookDAO.getBook(sc.nextLong());
                 sc.nextLine();
                 if(idFound(book)){
-                    System.out.print("What information you want to change?");
+                    System.out.println("What information you want to change?");
                     System.out.println("1- Name (" + book.getName() + ")");
                     System.out.println("2- Publication Date (" + book.getPublicationDate().format(fmt) + ")");
                     System.out.println("3- Author (" + book.getAuthor().getName() + ")");
@@ -187,6 +201,7 @@ public class Main {
                             break;
                         default:
                             printInvalidOption();
+                            break;
 
                     }
                 }
@@ -194,6 +209,7 @@ public class Main {
             case 5:
                 System.out.print("Digit the ID of the book to delete:");
                 book = bookDAO.getBook(sc.nextLong());
+                sc.nextLine();
                 if(idFound(book)){
                     bookDAO.removeBook(book);
                     System.out.println("Book " + book.getName() + " successfully deleted!");
@@ -201,12 +217,15 @@ public class Main {
                 break;
             default:
                printInvalidOption();
+               break;
         }
+        pressEnterToContinue(sc);
     }
 
     private static <T> boolean idFound(T type){
         if(type == null){
             System.err.println("ID not found!");
+            System.out.println();
             return false;
         }
         return true;
@@ -214,6 +233,12 @@ public class Main {
 
     private static void printInvalidOption(){
         System.err.println("Invalid option!");
+
+    }
+
+    private static void pressEnterToContinue(Scanner sc){
+        System.out.println("--PRESS ENTER TO CONTINUE");
+        sc.nextLine();
     }
 
 }
