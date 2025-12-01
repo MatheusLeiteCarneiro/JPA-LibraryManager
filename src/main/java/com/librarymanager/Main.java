@@ -45,7 +45,7 @@ public class Main {
                     System.out.println("Operations finished");
                     break;
                 default:
-                    System.out.println("Invalid option");
+                    System.out.println("Invalid option!");
             }
         }
     }
@@ -96,6 +96,12 @@ public class Main {
                     System.out.println("Author " + author.getName() + "and their books successfully deleted");
                 }
                 break;
+            default:
+                System.out.println("Invalid option!");
+
+
+
+
         }
     }
 
