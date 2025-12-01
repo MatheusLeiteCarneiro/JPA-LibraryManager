@@ -88,10 +88,14 @@ public class Main {
                     System.out.println("Successfully Updated");
                 }
                 break;
-
-
-
-
+            case 5:
+                System.out.println("Type the ID of the author you want to delete: ");
+                author = authorDAO.getAuthorByID(sc.nextLong());
+                if(idFound(author)){
+                    authorDAO.removeAuthor(author);
+                    System.out.println("Author " + author.getName() + "and their books successfully deleted");
+                }
+                break;
         }
     }
 
