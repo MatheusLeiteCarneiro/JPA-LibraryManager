@@ -67,8 +67,10 @@ public class Main {
             case 2:
                 System.out.print("Type Author ID: ");
                 author = authorDAO.getAuthorByID(sc.nextLong());
+                if(idFound(author)){
                 System.out.println("Book list of the author: " + author.getName());
                 author.getBookList().forEach(System.out::println);
+                }
                 break;
             case 3:
                 System.out.println("Authors List");
@@ -78,17 +80,15 @@ public class Main {
                 System.out.println("Type the ID of the author you want to update: ");
                 author = authorDAO.getAuthorByID(sc.nextLong());
                 sc.nextLine();
-                if(author != null){
+                if(idFound(author)){
                     System.out.println("Author: " + author);
                     System.out.println("New Name: ");
                     author.setName(sc.nextLine());
                     authorDAO.updateAuthor(author);
                     System.out.println("Successfully Updated");
                 }
-                else {
-                    System.out.println("Author not found");
-                }
                 break;
+
 
 
 
@@ -99,6 +99,13 @@ public class Main {
 
     }
 
+    private <T> boolean idFound(T type){
+        if(type == null){
+            System.err.println("ID not found!");
+            return false;
+        }
+        return true;
+    }
 
 
 }
