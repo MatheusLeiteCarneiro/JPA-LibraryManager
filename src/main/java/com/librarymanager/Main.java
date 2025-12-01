@@ -74,6 +74,21 @@ public class Main {
                 System.out.println("Authors List");
                 authorDAO.getAllAuthors().forEach(System.out::println);
                 break;
+            case 4:
+                System.out.println("Type the ID of the author you want to update: ");
+                author = authorDAO.getAuthorByID(sc.nextLong());
+                sc.nextLine();
+                if(author != null){
+                    System.out.println("Author: " + author);
+                    System.out.println("New Name: ");
+                    author.setName(sc.nextLine());
+                    authorDAO.updateAuthor(author);
+                    System.out.println("Successfully Updated");
+                }
+                else {
+                    System.out.println("Author not found");
+                }
+                break;
 
 
 
@@ -83,6 +98,7 @@ public class Main {
     private void bookMenu(Scanner sc, EntityManager em){
 
     }
+
 
 
 }
