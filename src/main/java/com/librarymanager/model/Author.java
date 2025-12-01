@@ -3,7 +3,9 @@ package com.librarymanager.model;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Author {
@@ -34,6 +36,10 @@ public class Author {
 
     public long getId() {
         return id;
+    }
+
+    public List<Book> getBookList() {
+        return books.stream().sorted().collect(Collectors.toList());
     }
 
     public void addBook(Book book) {
