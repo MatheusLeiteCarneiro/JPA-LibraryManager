@@ -4,6 +4,7 @@ package com.librarymanager.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Book {
@@ -30,6 +31,10 @@ public class Book {
         this.author = author;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -52,5 +57,11 @@ public class Book {
 
     public void setAuthor(Author author) {
         this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return "ID: " + getId() + " | Name: " + getName() + " | Author: " + getAuthor().getName() + " | Publication date: " + getPublicationDate().format(fmt);
     }
 }
