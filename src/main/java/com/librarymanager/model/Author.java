@@ -2,6 +2,7 @@ package com.librarymanager.model;
 
 import jakarta.persistence.*;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class Author {
     }
 
     public List<Book> getBookList() {
-        return books.stream().sorted().collect(Collectors.toList());
+        return books.stream().sorted(Comparator.comparing(Book::getId)).collect(Collectors.toList());
     }
 
     public void addBook(Book book) {
